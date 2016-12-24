@@ -8,7 +8,7 @@ import us.ceka.dao.FootballTeamDao;
 import us.ceka.domain.FootballTeam;
 
 @Repository("footballTeamDao")
-public class FootballTeamDaoImpl extends AbstractDaoImpl<Integer, FootballTeam> implements FootballTeamDao{
+public class FootballTeamDaoImpl extends FootballDaoImpl<Integer, FootballTeam> implements FootballTeamDao{
 	
 	public void truncate() {
 		int rowsUpdated = getSession().createNativeQuery("truncate table football_team").executeUpdate();

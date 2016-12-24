@@ -12,6 +12,6 @@ public interface FootballMatchDto extends AbstractDto<FootballMatch>{
 	public List<FootballMatch> getLatestMatchesByLeauge(FootballLeague league);
 	public Map<FootballLeague, List<FootballMatch>> getAllLatestMatches();
 	public Map<FootballLeague, List<FootballMatch>> getLatestMatches(FootballLeague... league);
-	public Map<String, Object> getMatchStat(FootballMatch footballMatch);
+	public Map<String, Object> getMatchUpStat(FootballMatch footballMatch);
 	public List<FootballMatch> getAllMatchResults(FootballLeague league, FootballSeason season, FootballTeam team);
 }

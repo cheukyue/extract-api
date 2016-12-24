@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>ceka.us</groupId>
 		<artifactId>extract-api</artifactId>
-		<version>0.1</version>
+		<version>0.2</version>
 	</parent>
 	<artifactId>footballOdds</artifactId>
 	<packaging>jar</packaging>
@@ -14,9 +14,8 @@
 		<mysql.connector.version>5.1.31</mysql.connector.version>
 		<jsoup.version>1.9.2</jsoup.version>
 		<javax.validation.version>1.1.0.Final</javax.validation.version>
+		<easyrules.version>2.3.0</easyrules.version>
 	</properties>
-
-
 
 	<build>
 		<plugins>
@@ -49,6 +48,18 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${springframework.version}</version>
+		</dependency>
+		
+		<!-- Easy Rules -->
+		<dependency>
+			<groupId>org.easyrules</groupId>
+			<artifactId>easyrules-core</artifactId>
+			<version>${easyrules.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.easyrules</groupId>
+			<artifactId>easyrules-spring</artifactId>
+			<version>${easyrules.version}</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -83,7 +94,6 @@
 		</dependency>
 
 		<!-- Apache commons -->
-
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -118,6 +128,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ceka.us</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

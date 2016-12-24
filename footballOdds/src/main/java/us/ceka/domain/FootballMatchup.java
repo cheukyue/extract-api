@@ -16,12 +16,12 @@ import us.ceka.util.StringListConverter;
 @NamedNativeQueries( {
 	@NamedNativeQuery(       
 		    name = "home_team_matchup",
-		    query = "CALL home_team_matchup(:team, :league)",
+		    query = "CALL home_team_matchup(:team, :league, :numSeason)",
 		    resultClass = FootballMatchup.class
 	),
 	@NamedNativeQuery(       
 		    name = "away_team_matchup",
-		    query = "CALL away_team_matchup(:team, :league)",
+		    query = "CALL away_team_matchup(:team, :league, :numSeason)",
 		    resultClass = FootballMatchup.class
 	)
 })
@@ -48,6 +48,10 @@ public class FootballMatchup extends AbstractObject<FootballMatchup> implements 
 	
 	@Column(name="match_count")
 	private int numMatches;
+	
+	@Column(name="vsRank")
+	@Convert(converter=StringListConverter.class)
+	private List<String> vsRankList;	
 	
 	@Column(name="vsTeam")
 	@Convert(converter=StringListConverter.class)
@@ -116,6 +120,12 @@ public class FootballMatchup extends AbstractObject<FootballMatchup> implements 
 		this.goalAgainstList = goalAgainstList;
 	}
 	
+	public List<String> getVsRankList() {
+		return vsRankList;
+	}
+	public void setVsRankList(List<String> vsRankList) {
+		this.vsRankList = vsRankList;
+	}
 	public int hashCode() {
 		int hashCode = 1;
 		if(team != null)  hashCode = 31 * hashCode + team.hashCode();

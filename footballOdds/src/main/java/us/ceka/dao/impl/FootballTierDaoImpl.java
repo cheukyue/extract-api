@@ -10,7 +10,7 @@ import us.ceka.domain.FootballLeague;
 import us.ceka.domain.FootballTier;
 
 @Repository("footballTierDao")
-public class FootballTierDaoImpl extends AbstractDaoImpl<String, FootballTier> implements FootballTierDao{
+public class FootballTierDaoImpl extends FootballDaoImpl<String, FootballTier> implements FootballTierDao{
 	
 	public Map<String, Integer> getNumTier(FootballLeague league) {
 		Map<String, Integer> map = new HashMap<String, Integer>();

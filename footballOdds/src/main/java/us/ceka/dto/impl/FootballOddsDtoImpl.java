@@ -16,7 +16,7 @@ import us.ceka.dto.FootballOddsDto;
 import us.ceka.util.RegexUtil;
 
 @Repository("footballOddsDto")
-public class FootballOddsDtoImpl extends AbstractDtoJsoupImpl<FootballOdds> implements FootballOddsDto{
+public class FootballOddsDtoImpl extends FootballDtoJsoupImpl<FootballOdds> implements FootballOddsDto{
 	public FootballOdds getLatestById(String matchId) {
 		Document doc = getJsoupTemplate().getDocumnetByAlias("url.match.odd", matchId);
 		Element titleNode = doc.select("a[title^=對賽往績]").first();
@@ -52,7 +52,7 @@ public class FootballOddsDtoImpl extends AbstractDtoJsoupImpl<FootballOdds> impl
 		try {
 			BeanUtils.populate(odds, oddsPropMap);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			log.error("Error on creating FootballMatch bean", e);
+			log.error("Error on populating value into FootballMatch bean", e);
 		}
 
 		log.info("Latest odds: {}", odds);

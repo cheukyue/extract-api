@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -21,10 +22,11 @@ import us.ceka.domain.FootballMatch;
 import us.ceka.domain.FootballSeason;
 import us.ceka.domain.FootballTeam;
 import us.ceka.dto.FootballMatchDto;
+import us.ceka.util.DateTimeUtil;
 import us.ceka.util.RegexUtil;
 
 @Repository("footballMatchDto")
-public class FootballMatchDtoImpl extends AbstractDtoJsoupImpl<FootballMatch> implements FootballMatchDto{
+public class FootballMatchDtoImpl extends FootballDtoJsoupImpl<FootballMatch> implements FootballMatchDto{
 	
 	private @Value("${footballodds.numPerPage}") int numberMatchesPerPage = 60;
 
@@ -47,18 +49,30 @@ public class FootballMatchDtoImpl extends AbstractDtoJsoupImpl<FootballMatch> im
 		for(Element elt : matchTags) {
 			if(StringUtils.contains(elt.attr("value"), "matchid")) {
 				if(log.isDebugEnabled()) log.debug("{}", elt.attr("value"));
-				List<String> matchInfo = RegexUtil.findSingleGroupList("matchid=(\\d+)&tdate=(\\d{2}\\-\\d{2}\\-\\d{4})&tday=(\\w{3})&tnum=(\\d+)", elt.attr("value"));
-				List<String> teamName = RegexUtil.findSingleGroupList("(\\S+) 對 (\\S+)", elt.text());
+				//List<String> matchInfo = RegexUtil.findSingleGroupList("matchid=(\\d+)&tdate=(\\d{2}\\-\\d{2}\\-\\d{4})&tday=(\\w{3})&tnum=(\\d+)", elt.attr("value"));
+				//List<String> teamName = RegexUtil.findSingleGroupList("(\\S+) 對 (\\S+)", elt.text());
+				//propMap.put("matchDate", LocalDateTime.parse(String.format("%s 00:00", matchInfo.get(1)), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+				
+				List<String> matchInfo = RegexUtil.findSingleGroupList("^(\\d+)\\/(\\d+) (\\S+) (\\d+) (.+)", elt.text());
+				String matchId = RegexUtil.findFirstSingleGroup("tmatchid=(\\d+)", elt.attr("value"));
+				List<String> teamName = RegexUtil.findSingleGroupList("(\\S+) 對 (\\S+)", matchInfo.get(4));
+
+				String matchYear = DateTimeUtil.isFutureMonthNextYear(matchInfo.get(1)) ? 
+						LocalDateTime.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy")) : LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy"));
 
 				Map<String, Object> propMap = new HashMap<String, Object>();
-				propMap.put("matchDate", LocalDateTime.parse(String.format("%s 00:00", matchInfo.get(1)), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+				propMap.put("matchDate", LocalDateTime.parse(String.format("%02d-%02d-%s 00:00", 
+																		Integer.parseInt(matchInfo.get(0)), 
+																		Integer.parseInt(matchInfo.get(1)), 
+																		matchYear
+															), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
 				propMap.put("homeTeam", teamName.get(0));
 				propMap.put("awayTeam", teamName.get(1));
 				propMap.put("matchDay", matchInfo.get(2));
 				propMap.put("matchNum", matchInfo.get(3));
 				propMap.put("status", FootballMatch.MATCH_STATUS.PENDING.getCode());
 				propMap.put("season", FootballMatch.MATCH_SEASON.CURRENT.getLabel());
-				FootballMatch footballMatch = new FootballMatch(matchInfo.get(0));
+				FootballMatch footballMatch = new FootballMatch(matchId);
 				try {
 					BeanUtils.populate(footballMatch, propMap);
 				} catch (IllegalAccessException | InvocationTargetException e) {
@@ -112,7 +126,7 @@ public class FootballMatchDtoImpl extends AbstractDtoJsoupImpl<FootballMatch> im
 		return leagueMatchMap;
 	}
 
-	public Map<String, Object> getMatchStat(FootballMatch footballMatch) {
+	public Map<String, Object> getMatchUpStat(FootballMatch footballMatch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Document statDoc = getJsoupTemplate().getDocumnetByAlias("url.stat.main", 
 				footballMatch.getMatchDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
@@ -166,33 +180,37 @@ public class FootballMatchDtoImpl extends AbstractDtoJsoupImpl<FootballMatch> im
 				LocalDateTime matchDate = LocalDateTime.parse(String.format("%s 00:00", matchElt.child(1).text()), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 				propertiesMap.put("matchDate", matchDate);
 				propertiesMap.put("matchDay", StringUtils.upperCase(matchDate.format(DateTimeFormatter.ofPattern("EEE"))));
-				List<String> result = RegexUtil.findSingleGroupList("(\\d+):(\\d+)\\((\\d+):(\\d+)\\)", matchElt.child(5).text());
-				//propertiesMap.put("result", FootballMatch.MATCH_RESULT.getByLabel(matchElt.child(3).text()).getCode());
+				List<String> matchResult = RegexUtil.findSingleGroupList("(\\d+):(\\d+)\\((\\d+):(\\d+)\\)", matchElt.child(5).text());
 				propertiesMap.put("status", FootballMatch.MATCH_STATUS.COMPLETED.getCode());
 				propertiesMap.put("dateUpdated", LocalDateTime.now());
+				propertiesMap.put("season", season.getSeason());
 				
 				if(FootballMatch.MATCH_AT.HOME.getLabel().equals(matchElt.child(2).text())) {
 					propertiesMap.put("homeTeam", team.getName());
 					propertiesMap.put("awayTeam", matchElt.child(4).text());
-					if(result.size() > 0) {
-						propertiesMap.put("homeScore", result.get(0));
-						propertiesMap.put("awayScore", result.get(1));
-						propertiesMap.put("homeHalfScore", result.get(2));
-						propertiesMap.put("awayHalfScore", result.get(3));
+					if(matchResult.size() > 0) {
+						propertiesMap.put("homeScore", matchResult.get(0));
+						propertiesMap.put("awayScore", matchResult.get(1));
+						propertiesMap.put("homeHalfScore", matchResult.get(2));
+						propertiesMap.put("awayHalfScore", matchResult.get(3));
 					}
 				} else {
 					propertiesMap.put("homeTeam", matchElt.child(4).text());
 					propertiesMap.put("awayTeam", team.getName());
-					if(result.size() > 0) {
-						propertiesMap.put("homeScore", result.get(1));
-						propertiesMap.put("awayScore", result.get(0));
-						propertiesMap.put("homeHalfScore", result.get(3));
-						propertiesMap.put("awayHalfScore", result.get(2));
+					if(matchResult.size() > 0) {
+						propertiesMap.put("homeScore", matchResult.get(1));
+						propertiesMap.put("awayScore", matchResult.get(0));
+						propertiesMap.put("homeHalfScore", matchResult.get(3));
+						propertiesMap.put("awayHalfScore", matchResult.get(2));
 					}
 				}
 				FootballMatch match = new FootballMatch();
 				try {
 					BeanUtils.populate(match, propertiesMap);
+					int result = NumberUtils.compare(match.getHomeScore(), match.getAwayScore());
+					match.setResult(result > 0 ? 
+							FootballMatch.MATCH_RESULT.WIN.getCode() : result == 0 ? 
+									FootballMatch.MATCH_RESULT.DRAW.getCode() : FootballMatch.MATCH_RESULT.LOSE.getCode());
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					log.debug("Error in populating FootballMatch", e);
 				}

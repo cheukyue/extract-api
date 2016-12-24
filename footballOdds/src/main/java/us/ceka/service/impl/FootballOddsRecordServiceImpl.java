@@ -19,6 +19,7 @@ import us.ceka.dao.FootballOddsDao;
 import us.ceka.dao.FootballTeamDao;
 import us.ceka.domain.FootballLeague;
 import us.ceka.domain.FootballMatch;
+import us.ceka.domain.FootballMatch.MATCH_SEASON;
 import us.ceka.domain.FootballOdds;
 import us.ceka.domain.FootballOddsId;
 import us.ceka.domain.FootballSeason;
@@ -77,8 +78,8 @@ public class FootballOddsRecordServiceImpl extends GenericServiceImpl implements
 		for(FootballMatch match : list) {
 			FootballTeam t = footballTeamDao.getByName(match.getHomeTeam());
 			Map<String, Object> matchMap = footballTeamDto.getResult(
-					match.getMatchDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-					t.getId()
+						match.getMatchDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")),
+						t.getId()
 					);
 			
 			//message will be given if there is an error
@@ -90,6 +91,7 @@ public class FootballOddsRecordServiceImpl extends GenericServiceImpl implements
 					match.setResult(result > 0 ? 
 							FootballMatch.MATCH_RESULT.WIN.getCode() : result == 0 ? 
 									FootballMatch.MATCH_RESULT.DRAW.getCode() : FootballMatch.MATCH_RESULT.LOSE.getCode());
+					match.setSeason(MATCH_SEASON.CURRENT.getLabel());
 
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					log.error("Error when populating map to FootballMatch bean", e);
@@ -102,7 +104,7 @@ public class FootballOddsRecordServiceImpl extends GenericServiceImpl implements
 	}
 	
 	public void executeUpdateTeamMatches() {
-		//List<FootballLeague> leagueList = new ArrayList<FootballLeague>();
+		//List<FootballLeague> leagueList = new java.util.ArrayList<FootballLeague>();
 		//leagueList.add(FootballLeague.ARG_DIVISION_1);
 		//for(FootballLeague league : leagueList) {
 		for(FootballLeague league : FootballLeague.values()) {

@@ -11,6 +11,7 @@ public enum FootballLeague {
 	GER_BUNDESLIGA("cfGSL", "德甲", "3", TYPE.LEAGUE),
 	ESP_LALIGA("cfSFL", "西甲", "4", TYPE.LEAGUE),
 	JPN_JLEAGUE("cfJD1", "日聯", "1103", TYPE.LEAGUE),
+	BRA_SERIE_A("cfBD1", "巴甲", "1113", TYPE.LEAGUE),
 	OTHERS("others", "其他", "0", TYPE.OTHERS)
 	;
 	public enum TYPE {LEAGUE, CUP, OTHERS};
@@ -18,6 +19,10 @@ public enum FootballLeague {
 	private String name;
 	private String id;
 	private TYPE type;
+	
+	public boolean isDomesticLeague() {
+		return this.type.equals(TYPE.LEAGUE);
+	}
 	
 	FootballLeague(String code, String name, String number, TYPE type) {
 		this.code = code;

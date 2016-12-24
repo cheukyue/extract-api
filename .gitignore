@@ -1,6 +1,9 @@
-*/target/
+pom.properties
 *.class
 *.jar
+*.war
 *.classpath
 *.settings
 *.project
+
+*/target

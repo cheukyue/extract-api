@@ -3,12 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ceka.us</groupId>
 	<artifactId>extract-api</artifactId>
-	<version>0.1</version>
+	<version>0.2</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>footballOdds</module>
 		<module>shopping</module>
 		<module>web</module>
+		<module>core</module>
 	</modules>
 
 	<properties>
@@ -21,7 +22,6 @@
 		<beanutils.version>1.9.2</beanutils.version>
 		<lang3.version>3.4</lang3.version>
 		<jdk.version>1.8</jdk.version>
-
 	</properties>
 
 	<build>

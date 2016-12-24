@@ -9,7 +9,7 @@ import us.ceka.domain.FootballOdds;
 import us.ceka.domain.FootballOddsId;
 
 @Repository("footballOddsDao")
-public class FootballOddsDaoImpl extends AbstractDaoImpl<FootballOddsId, FootballOdds> implements FootballOddsDao {
+public class FootballOddsDaoImpl extends FootballDaoImpl<FootballOddsId, FootballOdds> implements FootballOddsDao {
 	
 	public FootballOdds findById(FootballOddsId id) {
 		return getByKey(id);

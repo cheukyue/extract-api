@@ -14,7 +14,7 @@ import us.ceka.domain.FootballMatch;
 import us.ceka.domain.FootballMatchup;
 
 @Repository("footballMatchDao")
-public class FootballMatchDaoImpl extends AbstractDaoImpl<String, FootballMatch> implements FootballMatchDao{
+public class FootballMatchDaoImpl extends FootballDaoImpl<String, FootballMatch> implements FootballMatchDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<FootballMatch> findByStatus(String... status) {
@@ -26,6 +26,16 @@ public class FootballMatchDaoImpl extends AbstractDaoImpl<String, FootballMatch>
 	@SuppressWarnings("unchecked")
 	public List<FootballMatch> getLatestMatch() {
 		Query q = getSession().createQuery("from FootballMatch m where m.matchDate > now() order by m.matchDate");
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FootballMatch> getLastMatches(String team, FootballMatch.MATCH_AT matchAt, int numMatches) {
+		String sql = String.format("from FootballMatch m where %s = :team and m.matchDate < now() order by m.matchDate desc", FootballMatch.MATCH_AT.HOME.equals(matchAt) ? "m.homeTeam" : "m.awayTeam");
+		Query q = getSession().createQuery(sql);
+		q.setParameter("team", team);
+		q.setFirstResult(0);
+		q.setMaxResults(numMatches - 1);
 		return q.getResultList();
 	}
 	
@@ -48,7 +58,8 @@ public class FootballMatchDaoImpl extends AbstractDaoImpl<String, FootballMatch>
 			case AWAY: namedQuery = "away_team_matchup"; break;
 			case NEUTRAL: return null;
 		}
-		Query q = getSession().createNamedQuery(namedQuery).setParameter("team", team).setParameter("league", league);
+		if(log.isDebugEnabled()) log.debug("call {}('{}', '{}', {});", matchAt, team, league, 2);
+		Query q = getSession().createNamedQuery(namedQuery).setParameter("team", team).setParameter("league", league).setParameter("numSeason", 2);
 		return q.getResultList();
 	}
 	

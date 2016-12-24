@@ -19,7 +19,7 @@ import us.ceka.dto.FootballTeamDto;
 import us.ceka.util.RegexUtil;
 
 @Repository("footballTeamDto")
-public class FootballTeamDtoImpl extends AbstractDtoJsoupImpl<FootballTeam> implements FootballTeamDto{
+public class FootballTeamDtoImpl extends FootballDtoJsoupImpl<FootballTeam> implements FootballTeamDto{
 	
 	public List<String> getTeamNamesByLeague(FootballLeague league, FootballSeason season) {
 		List<String> l = new ArrayList<String>();

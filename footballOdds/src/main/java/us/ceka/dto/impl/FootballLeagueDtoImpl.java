@@ -13,7 +13,7 @@ import us.ceka.domain.FootballSeason;
 import us.ceka.dto.FootballLeagueDto;
 
 @Repository("footballLeagueDto")
-public class FootballLeagueDtoImpl extends AbstractDtoJsoupImpl<FootballLeague> implements FootballLeagueDto{
+public class FootballLeagueDtoImpl extends FootballDtoJsoupImpl<FootballLeague> implements FootballLeagueDto{
 	public List<FootballSeason> getAllSeasons(FootballLeague league) {
 		
 		Document doc = getJsoupTemplate().getDocumnetByAlias("url.league.current.table", league.getId());
