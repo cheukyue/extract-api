@@ -1,8 +1,8 @@
-/target/*
-
 *.class
 *.jar
 *.war
 *.classpath
 *.settings
 *.project
+
+./target
