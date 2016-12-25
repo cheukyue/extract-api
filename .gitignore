@@ -6,4 +6,4 @@ pom.properties
 *.settings
 *.project
 
-*/target
+target/
