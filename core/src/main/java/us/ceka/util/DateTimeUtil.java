@@ -6,7 +6,10 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class DateTimeUtil {
-
+	
+    /**
+     * Check if current month is December, return true when the argument is 1
+     */
 	public static boolean isFutureMonthNextYear(Object month) {
 		if(month == null) return false;
 		
