@@ -19,7 +19,10 @@ public class DateTimeUtilTest {
 		int intMonth = 1;
 		log.info("executing isFutureMonthNextYearTest with argument value [{}], Current month [{}]...(Expected true)", 
 				intMonth, LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM")));
-		assertTrue(DateTimeUtil.isFutureMonthNextYear(intMonth));
+		if("Dec".equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM"))))
+			assertTrue(DateTimeUtil.isFutureMonthNextYear(intMonth));
+		else 
+			assertFalse(DateTimeUtil.isFutureMonthNextYear(intMonth));
 		
 		String strMonth = "12";
 		log.info("executing isFutureMonthNextYearTest with argument value [{}], Current month [{}]...(Expected false)", 
