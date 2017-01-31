@@ -41,11 +41,12 @@ public class FootballMatchDaoImpl extends FootballDaoImpl<String, FootballMatch>
 	
 	public FootballMatch getMatch(String hometeam, String awayTeam, LocalDateTime matchDate) {
 		//Query q = getSession().createNativeQuery("select * from football_match where home_team = :home and away_team =:away and DATE(match_date) = :date", FootballMatch.class);
-		Query q = getSession().createQuery("from FootballMatch m where m.homeTeam = :home and m.awayTeam = :away and m.matchDate >= :start and m.matchDate < :end");
+		Query q = getSession().createQuery("from FootballMatch m where m.homeTeam = :home and m.awayTeam = :away and m.matchDate >= :start and m.matchDate < :end and m.status <> :status");
 		q.setParameter("home", hometeam);
 		q.setParameter("away", awayTeam);
 		q.setParameter("start", matchDate.truncatedTo(ChronoUnit.DAYS));
 		q.setParameter("end", matchDate.truncatedTo(ChronoUnit.DAYS).plusDays(1));
+		q.setParameter("status", FootballMatch.MATCH_STATUS.RESCHEDULED.getCode());
 		return q.getResultList().isEmpty() ? null : (FootballMatch)q.getSingleResult();
 	}
 	
