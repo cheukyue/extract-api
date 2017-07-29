@@ -18,7 +18,7 @@ public class JsoupTemplate {
 	private static final Logger log = LoggerFactory.getLogger(JsoupTemplate.class);
 
 	private int timeout;
-	private String usaerAgent;
+	private String userAgent;
 	private Map<String, String> endpoints;
 	private boolean proxyEnable;
 	private String proxyHost;
@@ -30,8 +30,8 @@ public class JsoupTemplate {
 		this.timeout = timeout;
 		return this;
 	}
-	public void setUsaerAgent(String usaerAgent) {
-		this.usaerAgent = usaerAgent;
+	public void setUserAgent(String usaerAgent) {
+		this.userAgent = usaerAgent;
 	}
 	public void setProxyEnable(boolean proxyEnable) {
 		this.proxyEnable = proxyEnable;
@@ -72,7 +72,7 @@ public class JsoupTemplate {
 		Document documnet = null;
 		if(log.isDebugEnabled()) log.debug("Connecting to '{}'...", url);
 		try {
-			Connection connection = Jsoup.connect(url).timeout(timeout).userAgent(usaerAgent);
+			Connection connection = Jsoup.connect(url).timeout(timeout).userAgent(userAgent);
 			if(proxyEnable) {
 				Authenticator.setDefault(new Authenticator() {
 					public PasswordAuthentication getPasswordAuthentication() {

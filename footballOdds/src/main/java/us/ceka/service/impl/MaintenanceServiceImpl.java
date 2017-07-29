@@ -45,7 +45,8 @@ public class MaintenanceServiceImpl extends GenericServiceImpl implements Mainte
 		
 		for(FootballLeague league : FootballLeague.values()) {
 			if (FootballLeague.TYPE.LEAGUE.equals(league.getType())) {
-				FootballSeason season = footballSeasonDao.getLatestSeason(league);
+				//FootballSeason season = footballSeasonDao.getLatestSeason(league);
+				for(FootballSeason season : footballSeasonDao.getSeasons(league, 3)) {			
 				footballStandingDto.getLeagueStanding(season.getSeasonId(), league.getId()).forEach(fl -> {
 					fl.setFootballStandingId(new FootballStandingId(league.getId(), season.getSeasonId(), fl.getFootballStandingId().getTeam()));
 					fl.setLeague(league.name());
@@ -53,6 +54,7 @@ public class MaintenanceServiceImpl extends GenericServiceImpl implements Mainte
 					log.info("Insert FootballStanding{}", fl);
 					footballStandingDao.persist(fl);
 				});
+				}
 			}
 		}
 

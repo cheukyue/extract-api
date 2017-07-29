@@ -25,7 +25,8 @@ public class FootballLeagueDtoImpl extends FootballDtoJsoupImpl<FootballLeague> 
 				FootballSeason s = new FootballSeason();
 				s.setSeasonId(season.attr("value"));
 				s.setSeason(season.text());
-				s.setLeague(league);
+				s.setLeagueId(league);
+				s.setLeague(league.name());
 				s.setLeagueName(league.getName());
 				log.info("FootballSeason: {}", s);
 				list.add(s);

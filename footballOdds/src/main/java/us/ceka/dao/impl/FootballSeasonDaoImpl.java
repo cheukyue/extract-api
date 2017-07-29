@@ -19,14 +19,14 @@ public class FootballSeasonDaoImpl extends FootballDaoImpl<String, FootballSeaso
 	}
 	
 	public FootballSeason getLatestSeason(FootballLeague league) {
-		Query q = getSession().createQuery("from FootballSeason s where s.season = (select max(fs.season) from FootballSeason fs where fs.league = :league) and s.league = :league");
+		Query q = getSession().createQuery("from FootballSeason s where s.season = (select max(fs.season) from FootballSeason fs where fs.leagueId = :league) and s.leagueId = :league");
 		q.setParameter("league", league);
 		return q.getResultList().isEmpty() ? null : (FootballSeason)q.getSingleResult(); 
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<FootballSeason> getSeasons(FootballLeague league, int limit) {
-		Query q =  getSession().createQuery("from FootballSeason s where s.league = :league order by season desc");
+		Query q =  getSession().createQuery("from FootballSeason s where s.leagueId = :league order by season desc");
 		q.setParameter("league", league);
 		q.setMaxResults(limit);
 		return q.getResultList();

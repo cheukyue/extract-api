@@ -39,6 +39,7 @@ public class AppConfig {
     
     @Bean
     public MessageSource messageSource() {
+    	log.info("initialising resource bundle...");
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         return messageSource;
@@ -51,6 +52,8 @@ public class AppConfig {
     		l.add(rule);
     	});
     	
+    	log.info("initialising rule engine...");
+    	
     	RulesEngineFactoryBean rulesEngineFactoryBean = new RulesEngineFactoryBean();
     	//rulesEngineFactoryBean.setRules(l);
     	rulesEngineFactoryBean.setSilentMode(true);
@@ -59,6 +62,7 @@ public class AppConfig {
     
     @Bean
     public JsoupTemplate jsoupTemplate() {
+    	log.info("initialising Jsoup template...");
     	JsoupTemplate jt = new JsoupTemplate();
       
     	Map<String, String> endpointMap = new HashMap<String, String>();   	
@@ -73,7 +77,7 @@ public class AppConfig {
     	}
     	jt.setEndpoints(endpointMap);
     	jt.setTimeout(env.getProperty("jsoup.timeout", Integer.class, 3000));
-    	jt.setUsaerAgent(env.getRequiredProperty("jsoup.userAgent"));
+    	jt.setUserAgent(env.getRequiredProperty("jsoup.userAgent"));
     	jt.setProxyEnable(env.getProperty("jsoup.proxy.enable", Boolean.class, false));
     	jt.setProxyHost(env.getProperty("jsoup.proxy.host"));
     	jt.setProxyPort(env.getProperty("jsoup.proxy.port", Integer.class, 80));

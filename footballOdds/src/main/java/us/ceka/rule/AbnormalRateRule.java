@@ -17,7 +17,7 @@ import us.ceka.domain.FootballOdds;
 @Rule(name = "Abnormal Rate", description = "Unexpected rate according to match-up history")
 public class AbnormalRateRule extends AbstractRule{
 
-	private FootballMatch footballMatch;
+	//private FootballMatch footballMatch;
 	private FootballOdds footballOdds;
 	private Map<String, Object> matchupStat;
 	private boolean abnormalHomeRate;
@@ -56,21 +56,17 @@ public class AbnormalRateRule extends AbstractRule{
 	@Action
 	public void execute() throws Exception {
 		if(abnormalHomeRate) 
-			log.info("***[{} {}] Abnormal Home Rate {} ({},{} vs {}) with {}win, {}draw out of {}", 
-				footballMatch.getMatchDate(), footballMatch.getMatchDay(), footballOdds.getHomeRate(), 
-				footballMatch.getMatchId(), footballMatch.getHomeTeam(), footballMatch.getAwayTeam(), 
-				vsWin, vsDraw, vsWin + vsDraw + vsLose);
+			log.info("*** Abnormal Home Rate {} with {}win, {}draw out of {}", 
+				footballOdds.getHomeRate(), vsWin, vsDraw, vsWin + vsDraw + vsLose);
 		
 		if(abnormalAwayRate) 
-			log.info("***[{} {}] Abnormal Away Rate {} ({},{} vs {}) with {}win, {}draw out of {}", 
-					footballMatch.getMatchDate(), footballMatch.getMatchDay(), footballOdds.getAwayRate(), 
-					footballMatch.getMatchId(), footballMatch.getHomeTeam(), footballMatch.getAwayTeam(), 
-					vsLose, vsDraw, vsWin + vsDraw + vsLose);
+			log.info("*** Abnormal Away Rate {} with {}win, {}draw out of {}", 
+					footballOdds.getAwayRate(), vsLose, vsDraw, vsWin + vsDraw + vsLose);
 					
 	}
 
 	public AbnormalRateRule setInput(FootballMatch footballMatch, FootballOdds footballOdds, Map<String, Object> matchupStat) {
-		this.footballMatch = footballMatch;
+		//this.footballMatch = footballMatch;
 		this.footballOdds = footballOdds;
 		this.matchupStat = matchupStat;
 		return this;

@@ -36,10 +36,10 @@ public class JsoupTemplateTest {
 		log.info("executing getDocumnetByAliasTest...");
 		JsoupTemplate jt = new JsoupTemplate();
 		
-		jt.setTimeout(NumberUtils.toInt(props.getProperty("jsoup.timeout")));
+		jt.setTimeout(NumberUtils.toInt(props.getProperty("jsoup.timeout"))); 
 		
 		jt.setProxyEnable(BooleanUtils.toBoolean(props.getProperty("jsoup.proxy.enable")));
-    	jt.setUsaerAgent(StringUtils.defaultString(props.getProperty("jsoup.userAgent"), "-"));
+    	jt.setUserAgent(StringUtils.defaultString(props.getProperty("jsoup.userAgent"), "-")); 
     	jt.setProxyHost(props.getProperty("jsoup.proxy.host"));
     	jt.setProxyPort(NumberUtils.toInt(props.getProperty("jsoup.proxy.port")));
     	jt.setProxyUser(props.getProperty("jsoup.proxy.user"));

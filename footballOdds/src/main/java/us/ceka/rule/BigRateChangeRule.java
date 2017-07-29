@@ -7,7 +7,6 @@ import org.easyrules.annotation.Action;
 import org.easyrules.annotation.Condition;
 import org.easyrules.annotation.Rule;
 import org.easyrules.spring.SpringRule;
-import org.springframework.context.annotation.Scope;
 
 import us.ceka.domain.Analytics;
 import us.ceka.domain.FootballMatch;
@@ -17,7 +16,7 @@ import us.ceka.domain.FootballOdds;
 @Rule(name = "BigRateChange", description = "Detect big rate Change")
 public class BigRateChangeRule extends AbstractRule{
 	
-	private FootballMatch footballMatch;
+	//private FootballMatch footballMatch;
 	private FootballOdds initialOdds;
 	private FootballOdds latestOdds;
 	
@@ -47,8 +46,7 @@ public class BigRateChangeRule extends AbstractRule{
 		}
 		
 		if(this.bigRateChange) {
-		log.info("***[{} {}] Away Rate ({},{} vs {}) has {} {} [H:{} D:{} A:{}]",  
-				footballMatch.getMatchDate(), footballMatch.getMatchDay(), footballMatch.getMatchId(), footballMatch.getHomeTeam(), footballMatch.getAwayTeam(),
+		log.info("*** Away Rate has {} {} [H:{} D:{} A:{}]",  
 				latestOdds.getAwayRate().compareTo(initialOdds.getAwayRate()) > 0 ? "increased" : "decreased",
 				latestOdds.getAwayRate().subtract(initialOdds.getAwayRate()).abs(),
 				latestOdds.getHomeRate(), latestOdds.getDrawRate(), latestOdds.getAwayRate() 
@@ -57,7 +55,7 @@ public class BigRateChangeRule extends AbstractRule{
 	}
 	
 	public BigRateChangeRule setIntput(FootballMatch footballMatch, FootballOdds initialOdds, FootballOdds latestOdds) {
-		this.footballMatch = footballMatch;
+		//this.footballMatch = footballMatch;
 		this.initialOdds = initialOdds;
 		this.latestOdds = latestOdds;
 		return this;

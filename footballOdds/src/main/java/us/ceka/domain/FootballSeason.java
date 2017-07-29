@@ -26,7 +26,10 @@ public class FootballSeason extends AbstractObject<FootballSeason> implements Se
 	@Basic
 	@Column(name="LEAGUE_ID")
 	@Convert( converter=FootballLeagueConverter.class )
-	private FootballLeague league;
+	private FootballLeague leagueId;
+	
+	@Column(name="LEAGUE")
+	private String league;
 	
 	@Column(name="LEAGUE_NAME")
 	private String leagueName;
@@ -55,14 +58,6 @@ public class FootballSeason extends AbstractObject<FootballSeason> implements Se
 		this.season = season;
 	}
 
-	public FootballLeague getLeague() {
-		return league;
-	}
-
-	public void setLeague(FootballLeague league) {
-		this.league = league;
-	}
-
 	public String getLeagueName() {
 		return leagueName;
 	}
@@ -86,4 +81,21 @@ public class FootballSeason extends AbstractObject<FootballSeason> implements Se
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
+
+	public FootballLeague getLeagueId() {
+		return leagueId;
+	}
+
+	public void setLeagueId(FootballLeague leagueId) {
+		this.leagueId = leagueId;
+	}
+
+	public String getLeague() {
+		return league;
+	}
+
+	public void setLeague(String league) {
+		this.league = league;
+	}
+
 }

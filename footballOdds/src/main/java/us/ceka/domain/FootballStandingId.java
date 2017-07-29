@@ -3,8 +3,6 @@ package us.ceka.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
-
 
 public class FootballStandingId extends AbstractObject<FootballStandingId> implements Serializable{
 

@@ -72,7 +72,7 @@ public class FootballOddsAnalyseServiceImpl extends GenericServiceImpl implement
 			List<FootballMatchup> awayMatchups = footballMatchDao.getMatchup(match.getAwayTeam(), match.getLeague().name(), FootballMatch.MATCH_AT.AWAY);
 
 			
-			log.info("Analysing [{}] {} ({}) vs {} ({}) [{}, {}, {}]", match.getMatchId(), match.getHomeTeam(), 
+			log.info("Analysing [{}] [{} {}] {} ({}) vs {} ({}) [{}, {}, {}]", match.getMatchId(), match.getMatchDate(), match.getMatchDay(), match.getHomeTeam(), 
 					match.getLeague().isDomesticLeague() ? homeStanding.getRank() : "-",
 					match.getAwayTeam(), 
 					match.getLeague().isDomesticLeague() ? awayStanding.getRank() : "-",
@@ -140,7 +140,7 @@ public class FootballOddsAnalyseServiceImpl extends GenericServiceImpl implement
 			if(latestOdds.getHomeRate().compareTo(new BigDecimal(Analytics.HIGH_HOME_ODDS.getValue())) > 0) {
 				analyseMatchup = true;
 			}
-			
+			/*
 			int homeMatchCount = 0, homeGoalsFor = 0, homeGoalsAgainst = 0, awayMatchCount = 0, awayGoalsFor = 0, awayGoalsAginst = 0;
 			List<FootballMatch> homeTeamPastMatches = footballMatchDao.getLastMatches(match.getHomeTeam(), FootballMatch.MATCH_AT.HOME, 10);
 			for(FootballMatch homeMatch : homeTeamPastMatches) {
@@ -167,7 +167,7 @@ public class FootballOddsAnalyseServiceImpl extends GenericServiceImpl implement
 				float awayTeamAverageGoalsFor =  awayGoalsFor / (float)awayMatchCount;
 				float awayTeamAverageGoalsAgainst =  awayGoalsAginst / (float)awayMatchCount;
 			}
-
+*/
 			if(!StringUtils.equals(latestOdds.getHandicapLine(), initialOdds.getHandicapLine())) {
 				log.info("***handicap line change...");
 			}
