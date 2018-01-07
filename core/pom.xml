@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>ceka.us</groupId>
-		<artifactId>extract-api</artifactId>
-		<version>0.2</version>
+		<artifactId>odds-api</artifactId>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
@@ -12,6 +12,7 @@
 	<properties>
 		<hibernate.version>5.2.2.Final</hibernate.version>
 		<jsoup.version>1.9.2</jsoup.version>
+		<selenium.version>3.0.1</selenium.version>
 	</properties>
 
 	<dependencies>
@@ -34,6 +35,14 @@
 			<artifactId>jsoup</artifactId>
 			<version>${jsoup.version}</version>
 		</dependency>
+
+		<!-- Selenium -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
+
 
 		<!-- Apache commons -->
 		<dependency>

@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>ceka.us</groupId>
-		<artifactId>extract-api</artifactId>
-		<version>0.2</version>
+		<artifactId>odds-api</artifactId>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>web</artifactId>
 	<packaging>war</packaging>

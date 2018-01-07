@@ -70,7 +70,7 @@ public class JsoupTemplate {
 
 	public Document getDocument(String url) {
 		Document documnet = null;
-		if(log.isDebugEnabled()) log.debug("Connecting to '{}'...", url);
+		if(log.isInfoEnabled()) log.debug("Connecting to '{}'...", url);
 		try {
 			Connection connection = Jsoup.connect(url).timeout(timeout).userAgent(userAgent);
 			if(proxyEnable) {
