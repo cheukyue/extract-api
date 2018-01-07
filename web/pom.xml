@@ -38,7 +38,7 @@
 		
 		<dependency>
 			<groupId>ceka.us</groupId>
-			<artifactId>footballOdds</artifactId>
+			<artifactId>football-data</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
