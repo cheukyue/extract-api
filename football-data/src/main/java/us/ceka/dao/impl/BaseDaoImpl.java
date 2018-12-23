@@ -14,12 +14,12 @@ import us.ceka.dao.AbstractDao;
 
 public abstract class BaseDaoImpl<PK extends Serializable, T> implements AbstractDao<PK, T> {
     
-    private final Class<? extends T> persistentClass;
+    protected Class<? extends T> persistentClass;
     protected final Logger log = LoggerFactory.getLogger(getClass().getName());
      
     @SuppressWarnings("unchecked")
-    public BaseDaoImpl(){
-        this.persistentClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    public BaseDaoImpl(){   	
+    	this.persistentClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
      
     @Autowired
@@ -36,6 +36,14 @@ public abstract class BaseDaoImpl<PK extends Serializable, T> implements Abstrac
  
     public void persist(T entity) {
         getSession().persist(entity);
+    }
+    
+    public void update(T entity) {
+    	getSession().update(entity);
+    }
+    
+    public void merge(T entity) {
+    	getSession().merge(entity);
     }
  
     public void delete(T entity) {

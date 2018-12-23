@@ -40,9 +40,11 @@ public class OddsDtoImplTest {
 		Element elt = d.getElementById("ctl00_cm_rptMatches_ctl12_tdFullRes");
 		if(elt != null) log.info("{}", elt.text());
 		*/
-		Document d = jsoupTemplate.getDocument("http://www.teamfeed.co.uk/injuries-suspensions/football/germany/bundesliga");
-		List<Element>li = d.select("h1");
-		for(Element elt : li) log.info("{}", elt.text());
+		Document d = jsoupTemplate.getDocument("http://www.teamfeed.co.uk/lineups/manchester-city");
+		List<Element>li = d.select(".pitch .player-h");
+		//List<Element>li = d.select(".pitch .formation-a");
+		//for(Element elt : li) log.info("{}", elt.text());
+		for(Element elt : li) log.info("{}", elt.classNames());
 		
 		log.info("----------------------- end test--------------");
 		assertTrue(true);

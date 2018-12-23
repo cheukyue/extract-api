@@ -1,5 +1,7 @@
 package us.ceka.domain;
 
+import java.util.Arrays;
+
 public enum League {
 	ENG_PREMIER_LEAGUE ("cfEPL", "英超", "1", TYPE.LEAGUE),
 	ENG_FA_CUP ("cfEFA", "英足盃", "5", TYPE.CUP),
@@ -46,9 +48,7 @@ public enum League {
 	}
 	
 	public static League getByCode(String code) {
-		for(League l : League.values()) 
-			if(l.getCode().equals(code)) return l;
-		return null;
+		return Arrays.stream(League.values()).filter(l -> l.getCode().equals(code)).findFirst().get();
 	}
 	public static League getById(String id) {
 		for(League l : League.values())

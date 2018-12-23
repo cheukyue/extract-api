@@ -82,8 +82,8 @@ public class JsoupTemplate {
 				connection.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
 			}
 				
-			//if(this.cookies != null) connection.cookies(cookies);
 			Connection.Response response = connection.execute();
+			//Map<String, String> cookies = response.cookies();
 			documnet = response.parse();
 
 		} catch (IOException e) {

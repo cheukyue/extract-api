@@ -1,6 +1,7 @@
 package us.ceka.domain;
 
 import java.io.Serializable;
+import java.util.EnumSet;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -12,6 +13,26 @@ import javax.persistence.Table;
 public class Player extends AbstractObject<Player> implements Serializable{
 
 	private static final long serialVersionUID = 6664334472226337155L;
+	
+	public enum Position {
+		GK,
+		LB, CB, RB,
+		LM, LW, DM, CM, AM, RM, RW,
+		FW1, FW2, FW3;
+
+		public EnumSet<Position> getDefenders() {
+			return EnumSet.of(LB, CB, RB);
+		}
+		
+		public EnumSet<Position> getMidFields() {
+			return EnumSet.of(LM, LW, DM, CM, AM, RM, RW);
+		}
+		
+		public EnumSet<Position> getFowards() {
+			return EnumSet.of(FW1, FW2, FW3);
+		}
+	}
+	
 	
 	@EmbeddedId
 	private PlayerId footballPlayerId;

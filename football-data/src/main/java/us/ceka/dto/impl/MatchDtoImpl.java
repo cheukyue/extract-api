@@ -1,24 +1,40 @@
 package us.ceka.dto.impl;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriTemplate;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import us.ceka.domain.League;
 import us.ceka.domain.Match;
@@ -33,6 +49,7 @@ import us.ceka.util.RegexUtil;
 public class MatchDtoImpl extends BaseDtoJsoupImpl<Match> implements MatchDto{
 
 	private @Value("${footballodds.numPerPage}") int numberMatchesPerPage = 60;
+	private @Value("${url.json.match.result}") String matchResultJsonURL;
 
 	public List<Match> getLatestMatchesByLeauge(League league) {
 		return getLatestMatches(league).get(league);
@@ -238,6 +255,12 @@ public class MatchDtoImpl extends BaseDtoJsoupImpl<Match> implements MatchDto{
 				/* Sample link
 				 * http://bet.hkjc.com/football/results/search_result.aspx?lang=CH&search=true&srchdate=1&fdate=20171104&tdate=20171104&srchteam=1&teamcode=541
 				 */
+				try {
+					getMatchResult(team.getId(), matchDate);
+				} catch (Exception e) {
+					log.error("Exception caught on fetching match result", e);
+				}
+				
 				Document matchDoc = getJsoupTemplate().getDocumnetByAlias("url.match.result", 
 											matchDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), 
 											matchDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")), 
@@ -320,8 +343,30 @@ public class MatchDtoImpl extends BaseDtoJsoupImpl<Match> implements MatchDto{
 		return list;
 	}
 
-	public void getAllMatchResultsByTeam(String teamId, String leagueId, String seasonId) {
+	public Match getMatchResult(String teamId, LocalDateTime startDate) throws Exception {
+		
+		String url = String.format(matchResultJsonURL, 
+									startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")),
+									startDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")), 
+									teamId
+								);
+        
+        ResponseEntity<String> response = getRestTemplate().getForEntity(url, String.class);
+        
+        log.info("xxxxxxxxxxxxx{}", response.getHeaders());
+		
+		log.info("Calling match json URL: {}", url);
+		JsonNode root = new ObjectMapper().readTree(response.getBody());	
+		
+		int matchCount = root.path(0).get("matchescount").asInt(0);
+		if(matchCount == 0) throw new Exception(String.format("No match is returned for teamId[%s], matchDate[%s]", teamId, startDate));
+		if(matchCount > 1) log.warn("Unexpected match result count for teamId[{}], matchDate[{}], matchCount[{}]", teamId, startDate, matchCount);
+		
+		Map<String, Object> fieldMap = new HashMap<String, Object>();
+		fieldMap.put("matchId", root.path(0).path("matches").path(0).path("matchID"));
+		
 
+		return new Match();
 	}
 
 

@@ -59,6 +59,33 @@ public class Odds extends AbstractObject<Odds> implements Serializable{
 	@Column(name="DRAW_RATE", nullable=false)
 	private BigDecimal drawRate;
 	
+	@Digits(integer=7, fraction=3)
+	@Column(name="HALF_HOME_RATE", nullable=false)
+	private BigDecimal halfHomeRate;
+
+	@Digits(integer=7, fraction=3)
+	@Column(name="HALF_AWAY_RATE", nullable=false)
+	private BigDecimal halfAwayRate;
+
+	@Digits(integer=7, fraction=3)
+	@Column(name="HALF_DRAW_RATE", nullable=false)
+	private BigDecimal halfDrawRate;
+	
+	@Column(name="HANDICAP_HAD_LABEL")
+	private String handicapHAD_label;
+	
+	@Digits(integer=7, fraction=3)
+	@Column(name="HAND_HAD_HOME_RATE", nullable=false)
+	private BigDecimal handicapHAD_homeRate;
+
+	@Digits(integer=7, fraction=3)
+	@Column(name="HAND_HAD_AWAY_RATE", nullable=false)
+	private BigDecimal handicapHAD_awayRate;
+
+	@Digits(integer=7, fraction=3)
+	@Column(name="HAND_HAD_DRAW_RATE", nullable=false)
+	private BigDecimal handicapHAD_drawRate;
+	
 	@Column(name="HANDICAP_LINE")
 	private String handicapLine;
 	
@@ -153,6 +180,62 @@ public class Odds extends AbstractObject<Odds> implements Serializable{
 
 	public void setDateCreated(LocalDateTime dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public BigDecimal getHalfHomeRate() {
+		return halfHomeRate;
+	}
+
+	public void setHalfHomeRate(BigDecimal halfHomeRate) {
+		this.halfHomeRate = halfHomeRate;
+	}
+
+	public BigDecimal getHalfAwayRate() {
+		return halfAwayRate;
+	}
+
+	public void setHalfAwayRate(BigDecimal halfAwayRate) {
+		this.halfAwayRate = halfAwayRate;
+	}
+
+	public BigDecimal getHalfDrawRate() {
+		return halfDrawRate;
+	}
+
+	public void setHalfDrawRate(BigDecimal halfDrawRate) {
+		this.halfDrawRate = halfDrawRate;
+	}
+
+	public String getHandicapHAD_label() {
+		return handicapHAD_label;
+	}
+
+	public void setHandicapHAD_label(String handicapHAD_label) {
+		this.handicapHAD_label = handicapHAD_label;
+	}
+
+	public BigDecimal getHandicapHAD_homeRate() {
+		return handicapHAD_homeRate;
+	}
+
+	public void setHandicapHAD_homeRate(BigDecimal handicapHAD_homeRate) {
+		this.handicapHAD_homeRate = handicapHAD_homeRate;
+	}
+
+	public BigDecimal getHandicapHAD_awayRate() {
+		return handicapHAD_awayRate;
+	}
+
+	public void setHandicapHAD_awayRate(BigDecimal handicapHAD_awayRate) {
+		this.handicapHAD_awayRate = handicapHAD_awayRate;
+	}
+
+	public BigDecimal getHandicapHAD_drawRate() {
+		return handicapHAD_drawRate;
+	}
+
+	public void setHandicapHAD_drawRate(BigDecimal handicapHAD_drawRate) {
+		this.handicapHAD_drawRate = handicapHAD_drawRate;
 	}
 
 	@Override

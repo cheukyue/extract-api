@@ -13,7 +13,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Repository;
 
 import us.ceka.domain.Standing;
-import us.ceka.domain.StandingId;
 import us.ceka.dto.StandingDto;
 
 @Repository("standingDto")

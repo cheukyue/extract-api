@@ -9,6 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import us.ceka.odds.config.AppConfig;
 import us.ceka.service.OddsAnalyseService;
 import us.ceka.service.OddsRecordService;
+import us.ceka.service.SquadRecordService;
 import us.ceka.service.MaintenanceService;
 
 public class App 
@@ -26,6 +27,7 @@ public class App
 		OddsRecordService recordService = ctx.getBean(OddsRecordService.class);
 		MaintenanceService mainService = ctx.getBean(MaintenanceService.class);
 		OddsAnalyseService analyseService = ctx.getBean(OddsAnalyseService.class);
+		SquadRecordService squadService = ctx.getBean(SquadRecordService.class);
 		
 		if(args.length > 0) {
 			switch (args[0]) {
@@ -53,6 +55,12 @@ public class App
 				break;
 			case "REFRESH_PLAYER_TABLE":
 				mainService.executeRefreshPlayerTable();
+				break;
+			case "RECORD_SQUAD":
+				squadService.executeRecordMajorSquad();
+				break;
+			case "RECORD_HISTORIC_SQUAD":
+				squadService.recordPremierLeagueSquadByDateBefore();
 				break;
 			}
 		}	
